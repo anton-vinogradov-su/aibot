@@ -1,10 +1,16 @@
 """Test bot connection and channel access"""
 import asyncio
-from app.telegram.bot import bot
+from aiogram import Bot
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from app.config import settings
 
 
 async def test_bot():
+    bot = Bot(
+        token=settings.telegram_bot_token,
+        default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+    )
 
     print("Testing Telegram Bot Connection...\n")
 

@@ -40,12 +40,12 @@ def generate_and_publish():
 
 # Celery Beat schedule
 celery_app.conf.beat_schedule = {
-    'parse-news-every-30-minutes': {
+    'parse-news-task': {
         'task': 'parse_news',
         'schedule': crontab(minute=f'*/{settings.parse_interval_minutes}'),
     },
-    'generate-and-publish-every-hour': {
+    'generate-and-publish-posts': {
         'task': 'generate_and_publish',
-        'schedule': crontab(minute=5, hour='*/1'),  # 5 minutes past every hour
+        'schedule': crontab(minute=f'*/{settings.parse_interval_minutes}'),
     },
 }

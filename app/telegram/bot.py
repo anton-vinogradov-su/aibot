@@ -10,16 +10,16 @@ from app.config import settings
 logger = logging.getLogger(__name__)
 
 
-# Initialize bot instance
-bot = Bot(
-    token=settings.telegram_bot_token,
-    default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
-)
-
-
 async def send_message_to_channel(text: str) -> bool:
     """Send message to configured Telegram channel"""
+    bot = None
     try:
+        # Create new bot instance for each message to avoid event loop issues
+        bot = Bot(
+            token=settings.telegram_bot_token,
+            default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+        )
+
         await bot.send_message(
             chat_id=settings.telegram_channel_id,
             text=text
@@ -29,8 +29,10 @@ async def send_message_to_channel(text: str) -> bool:
     except Exception as e:
         logger.error(f"Failed to send message to channel: {e}")
         return False
-
-
-async def close_bot():
-    """Close bot session"""
-    await bot.session.close()
+    finally:
+        # Close bot session properly
+        if bot:
+            try:
+                await bot.session.close()
+            except Exception as e:
+                logger.error(f"Error closing bot session: {e}")

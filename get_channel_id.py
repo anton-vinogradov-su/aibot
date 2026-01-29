@@ -1,10 +1,17 @@
 """Get Telegram channel ID"""
 import asyncio
-from app.telegram.bot import bot
+from aiogram import Bot
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from app.config import settings
 
 
 async def get_channel_id():
+    bot = Bot(
+        token=settings.telegram_bot_token,
+        default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+    )
+
     print("=" * 60)
     print("Telegram Channel ID Finder")
     print("=" * 60)
@@ -53,6 +60,11 @@ async def get_channel_id():
 
 async def get_updates():
     """Get recent updates to find channel ID"""
+    bot = Bot(
+        token=settings.telegram_bot_token,
+        default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+    )
+
     print("Fetching recent updates...\n")
 
     try:

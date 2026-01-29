@@ -9,8 +9,7 @@ news_parser/
 ├── __init__.py           # Инициализация модуля
 ├── sites.py              # Базовый класс NewsParser и фабрика get_parser()
 ├── rbc_parser.py         # Парсер для RBC.ru (все рубрики)
-├── habr_parser.py        # Парсер для Habr.com
-└── telegram.py           # Парсер для Telegram каналов (заглушка)
+└── habr_parser.py        # Парсер для Habr.com
 ```
 
 ## Базовый класс NewsParser
