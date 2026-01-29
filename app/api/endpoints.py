@@ -94,7 +94,7 @@ def delete_keyword(keyword_id: int, db: Session = Depends(get_db)):
 @router.get("/news", response_model=List[schemas.NewsItemResponse])
 def get_news(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
     """Get news items"""
-    news = db.query(NewsItem).order_by(NewsItem.published_at.desc()).offset(skip).limit(limit).all()
+    news = db.query(NewsItem).order_by(NewsItem.id.desc()).offset(skip).limit(limit).all()
     return news
 
 
@@ -119,7 +119,7 @@ def get_posts(
     query = db.query(Post)
     if status:
         query = query.filter(Post.status == status)
-    posts = query.order_by(Post.created_at.desc()).offset(skip).limit(limit).all()
+    posts = query.order_by(Post.id.desc()).offset(skip).limit(limit).all()
     return posts
 
 
