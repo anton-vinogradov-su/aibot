@@ -43,3 +43,4 @@ wheels/
 
 # Docker
 *.pid
+celerybeat-schedule*
