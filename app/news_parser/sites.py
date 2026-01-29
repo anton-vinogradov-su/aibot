@@ -41,9 +41,13 @@ def get_parser(source_type: str) -> Optional[NewsParser]:
         from app.news_parser.rbc_parser import RBCParser
         return RBCParser()
 
+    # Check if it's a Habr source
+    if source_type_lower == 'habr' or source_type_lower.startswith('habr_'):
+        from app.news_parser.habr_parser import HabrParser
+        return HabrParser()
+
     # Add other parsers here in the future
     parsers = {
-        # 'habr': HabrParser,
         # 'vc': VCParser,
         # 'tproger': TprogerParser,
     }

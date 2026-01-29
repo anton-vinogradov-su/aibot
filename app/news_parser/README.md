@@ -9,6 +9,7 @@ news_parser/
 ├── __init__.py           # Инициализация модуля
 ├── sites.py              # Базовый класс NewsParser и фабрика get_parser()
 ├── rbc_parser.py         # Парсер для RBC.ru (все рубрики)
+├── habr_parser.py        # Парсер для Habr.com
 └── telegram.py           # Парсер для Telegram каналов (заглушка)
 ```
 
@@ -18,7 +19,9 @@ news_parser/
 - `fetch_page(url)` - получение HTML страницы
 - `parse(url)` - абстрактный метод для парсинга (реализуется в подклассах)
 
-## RBC Parser
+## Парсеры
+
+### RBC Parser
 
 **Файл**: `rbc_parser.py`
 
@@ -51,6 +54,32 @@ news_parser/
 }
 ```
 
+### Habr Parser
+
+**Файл**: `habr_parser.py`
+
+**URL**: `https://habr.com/ru/news/`
+
+**Особенности**:
+- Парсит новостную ленту Habr.com
+- Извлекает заголовок, ссылку и краткое описание
+- Поддерживает парсинг даты публикации из атрибута `datetime`
+- Может получать полный текст статьи (метод `fetch_full_article`)
+
+**Методы**:
+- `parse(url)` - парсинг новостей со страницы
+- `_parse_article(article_tag)` - парсинг отдельной новости
+- `fetch_full_article(url)` - получение полного текста статьи
+
+**Пример использования**:
+```python
+from app.news_parser.habr_parser import HabrParser
+
+parser = HabrParser()
+news = await parser.parse('https://habr.com/ru/news/')
+# Возвращает список из ~20 новостей
+```
+
 ## Фабрика парсеров
 
 **Функция**: `get_parser(source_type: str) -> NewsParser`
@@ -65,9 +94,12 @@ parser = get_parser('rbc_politics')  # RBCParser
 parser = get_parser('rbc_economics') # RBCParser
 parser = get_parser('rbc')           # RBCParser
 
+# Для Habr
+parser = get_parser('habr')          # HabrParser
+
 # Для будущих парсеров
-# parser = get_parser('habr')        # HabrParser
 # parser = get_parser('vc')          # VCParser
+# parser = get_parser('tproger')     # TprogerParser
 ```
 
 ## Добавление нового парсера
